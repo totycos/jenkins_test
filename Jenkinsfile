@@ -1,31 +1,57 @@
 pipeline {
     environment {
         DOCKER_ID = "dupertramp"
+        DOCKER_IMAGE_MOVIE = "jenkins_exam_movie"
         DOCKER_IMAGE_CAST = "jenkins_exam_cast"
         DOCKER_TAG = "v.${BUILD_ID}.0"
     }
     agent any
 
     stages {
-        stage('Build Cast microservice') {
-            steps {
-                script {
-                    sh '''
-                    cd cast-service
-                    docker build -t $DOCKER_ID/$DOCKER_IMAGE_CAST:$DOCKER_TAG .
-                    sleep 6
-                    '''
+        parallel {
+            stage('Build Movie microservice') {
+                steps {
+                    script {
+                        sh '''
+                        cd movie-service
+                        docker build -t $DOCKER_ID/$DOCKER_IMAGE_MOVIE:$DOCKER_TAG .
+                        sleep 4
+                        '''
+                    }
+                }
+            }
+            stage('Build Cast microservice') {
+                steps {
+                    script {
+                        sh '''
+                        cd cast-service
+                        docker build -t $DOCKER_ID/$DOCKER_IMAGE_CAST:$DOCKER_TAG .
+                        sleep 4
+                        '''
+                    }
                 }
             }
         }
 
-        stage('Run Cast microservice') {
-            steps {
-                script {
-                    sh '''
-                    docker run -d -p 8002:8000 --name cast_container $DOCKER_ID/$DOCKER_IMAGE_CAST:$DOCKER_TAG
-                    sleep 10
-                    '''
+        parallel {
+            stage('Run Movie microservice') {
+                steps {
+                    script {
+                        sh '''
+                        docker run -d -p 8001:8000 --name movie_container $DOCKER_ID/$DOCKER_IMAGE_MOVIE:$DOCKER_TAG
+                        sleep 4
+                        '''
+                    }
+                }
+            }
+            stage('Run Cast microservice') {
+                steps {
+                    script {
+                        sh '''
+                        docker run -d -p 8002:8000 --name cast_container $DOCKER_ID/$DOCKER_IMAGE_CAST:$DOCKER_TAG
+                        sleep 4
+                        '''
+                    }
                 }
             }
         }
@@ -40,16 +66,31 @@ pipeline {
             }
         }
 
-        stage('Push Cast microservice') {
-            environment {
-                DOCKER_PASS = credentials("DOCKER_HUB_PASS")
+        parallel {
+            stage('Push Movie microservice') {
+                environment {
+                    DOCKER_PASS = credentials("DOCKER_HUB_PASS")
+                }
+                steps {
+                    script {
+                        sh '''
+                        docker login -u $DOCKER_ID -p $DOCKER_PASS
+                        docker push $DOCKER_ID/$DOCKER_IMAGE_MOVIE:$DOCKER_TAG
+                        '''
+                    }
+                }
             }
-            steps {
-                script {
-                    sh '''
-                    docker login -u $DOCKER_ID -p $DOCKER_PASS
-                    docker push $DOCKER_ID/$DOCKER_IMAGE_CAST:$DOCKER_TAG
-                    '''
+            stage('Push Cast microservice') {
+                environment {
+                    DOCKER_PASS = credentials("DOCKER_HUB_PASS")
+                }
+                steps {
+                    script {
+                        sh '''
+                        docker login -u $DOCKER_ID -p $DOCKER_PASS
+                        docker push $DOCKER_ID/$DOCKER_IMAGE_CAST:$DOCKER_TAG
+                        '''
+                    }
                 }
             }
         }
