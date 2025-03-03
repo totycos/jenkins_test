@@ -41,6 +41,7 @@ pipeline {
                     steps {
                         script {
                             sh '''
+                            docker rm -f cast_container || true
                             docker run -d -p 8001:8000 --name movie_container $DOCKER_ID/$DOCKER_IMAGE_MOVIE:$DOCKER_TAG
                             sleep 4
                             '''
@@ -51,6 +52,7 @@ pipeline {
                     steps {
                         script {
                             sh '''
+                            docker rm -f cast_container || true
                             docker run -d -p 8002:8000 --name cast_container $DOCKER_ID/$DOCKER_IMAGE_CAST:$DOCKER_TAG
                             sleep 4
                             '''
