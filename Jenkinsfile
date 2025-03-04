@@ -87,7 +87,7 @@ pipeline {
                         script {
                             sh '''
                             docker rm -f cast_service || true
-                            docker run -d --network $NETWORK_NAME --name cast_service -e MOVIE_SERVICE_HOST_URL=http://movie_service:8000/api/v1/movies/ -p 8002:8000 $DOCKER_ID/$DOCKER_IMAGE_CAST:$DOCKER_TAG uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+                            docker run -d --network $NETWORK_NAME --name cast_service -e DATABASE_URI=postgresql://cast_db_username:cast_db_password@cast_db/cast_db_dev -e MOVIE_SERVICE_HOST_URL=http://movie_service:8000/api/v1/movies/ -p 8002:8000 $DOCKER_ID/$DOCKER_IMAGE_CAST:$DOCKER_TAG uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
                             sleep 4
                             '''
                         }
