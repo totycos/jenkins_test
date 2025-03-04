@@ -53,7 +53,7 @@ pipeline {
                     steps {
                         script {
                             sh '''
-                            docker rm -f movie_db_container || true
+                            docker rm -f movie_db || true
                             docker run -d --network $NETWORK_NAME --name movie_db -e POSTGRES_USER=movie_db_username -e POSTGRES_PASSWORD=movie_db_password -e POSTGRES_DB=movie_db_dev -v postgres_data_movie:/var/lib/postgresql/data/ postgres:12.1-alpine
                             sleep 4
                             '''
@@ -64,7 +64,6 @@ pipeline {
                     steps {
                         script {
                             sh '''
-                            docker rm -f cast_db_container || true
                             docker rm -f cast_db || true
                             docker run -d --network $NETWORK_NAME --name cast_db -e POSTGRES_USER=cast_db_username -e POSTGRES_PASSWORD=cast_db_password -e POSTGRES_DB=cast_db_dev -v postgres_data_cast:/var/lib/postgresql/data/ postgres:12.1-alpine
                             sleep 4
