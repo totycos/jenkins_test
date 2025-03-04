@@ -75,7 +75,7 @@ pipeline {
                     steps {
                         script {
                             sh '''
-                            docker rm -f movie_container || true
+                            docker rm -f movie_service || true
                             docker run -d --network $NETWORK_NAME --name movie_service -e DATABASE_URI=postgresql://movie_db_username:movie_db_password@movie_db/movie_db_dev -e CAST_SERVICE_HOST_URL=http://cast_service:8000/api/v1/casts/ -p 8001:8000 $DOCKER_ID/$DOCKER_IMAGE_MOVIE:$DOCKER_TAG uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
                             sleep 4
                             '''
@@ -86,7 +86,7 @@ pipeline {
                     steps {
                         script {
                             sh '''
-                            docker rm -f cast_container || true
+                            docker rm -f cast_service || true
                             docker run -d --network $NETWORK_NAME --name cast_service -e MOVIE_SERVICE_HOST_URL=http://movie_service:8000/api/v1/movies/ -p 8002:8000 $DOCKER_ID/$DOCKER_IMAGE_CAST:$DOCKER_TAG uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
                             sleep 4
                             '''
