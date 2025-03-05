@@ -121,6 +121,7 @@ pipeline {
                             sh '''
                             docker login -u $DOCKER_ID -p $DOCKER_PASS
                             docker push $DOCKER_ID/$DOCKER_IMAGE_MOVIE:$DOCKER_TAG
+                            docker push $DOCKER_ID/$DOCKER_IMAGE_MOVIE:latest
                             '''
                         }
                     }
@@ -134,6 +135,7 @@ pipeline {
                             sh '''
                             docker login -u $DOCKER_ID -p $DOCKER_PASS
                             docker push $DOCKER_ID/$DOCKER_IMAGE_CAST:$DOCKER_TAG
+                            docker push $DOCKER_ID/$DOCKER_IMAGE_CAST:latest
                             '''
                         }
                     }
@@ -141,25 +143,35 @@ pipeline {
             }
         }
 
-        // stage('Déploiement en dev') {
-        //     environment {
-        //         KUBECONFIG = credentials("config")
-        //     }
-        //     steps {
-        //         script {
-        //             sh '''
-        //             rm -Rf .kube
-        //             mkdir .kube
-        //             ls
-        //             cat $KUBECONFIG > .kube/config
-        //             cp fastapi/values.yaml values.yml
-        //             cat values.yml
-        //             sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yml
-        //             helm upgrade --install app fastapi --values=values.yml --namespace dev
-        //             '''
-        //         }
-        //     }
-        // }
+        stage('Déploiement en dev') {
+            environment {
+                KUBECONFIG = credentials("config")
+            }
+            steps {
+                script {
+                    sh '''
+                    rm -Rf .kube
+                    mkdir .kube
+                    ls
+                    cat $KUBECONFIG > .kube/config
+                    cp charts/values.yaml values.yml
+                    cat values.yml
+                    sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yml
+                    helm upgrade --install app fastapi_dev --values=values.yml --namespace dev
+                    helm upgrade --install fastapi_dev charts/ \
+                        --values=values.yml \
+                        --namespace dev \
+                        --set images.gateway.repository="$DOCKERHUB_IMAGE_GATEWAY" \
+                        --set images.gateway.tag="$CI_COMMIT_SHORT_SHA" \
+                        --set images.users.repository="$DOCKERHUB_IMAGE_USERS" \
+                        --set images.users.tag="$CI_COMMIT_SHORT_SHA" \
+                        --set images.orders.repository="$DOCKERHUB_IMAGE_ORDERS" \
+                        --set images.orders.tag="$CI_COMMIT_SHORT_SHA" \
+                        --set service.nodeport="$NODEPORT_STAGING"
+                    '''
+                }
+            }
+        }
 
         // stage('Déploiement en staging') {
         //     environment {

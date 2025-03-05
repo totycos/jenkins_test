@@ -10,7 +10,7 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
-imagePullSecrets: 
+imagePullSecrets:
   - name: "regcred"
 nameOverride: ""
 fullnameOverride: ""
@@ -40,7 +40,7 @@ securityContext: {}
 service:
   type: NodePort
   port: 80
-  nodePort: 30007  
+  nodePort: 30007
   targetPort: 8000
 
 ingress:
