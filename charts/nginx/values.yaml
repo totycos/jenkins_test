@@ -1,0 +1,2 @@
+charts/nginx/values.yaml:
+  port: 8080

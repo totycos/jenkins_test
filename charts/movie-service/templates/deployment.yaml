@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: movie-service
+    spec:
+      replicas: {{ .Values.replicas }}
+      selector:
+        matchLabels:
+          app: movie-service
+      template:
+        metadata:
+          labels:
+            app: movie-service
+        spec:
+          containers:
+            - name: movie-service
+              image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+              ports:
+                - containerPort: 8000
+              env:
+                - name: DATABASE_URI
+                  value: "postgresql://movie_db_username:movie_db_password@movie-db/movie_db_dev"
+                - name: CAST_SERVICE_HOST_URL
+                  value: "http://cast-service:8000/api/v1/casts/"

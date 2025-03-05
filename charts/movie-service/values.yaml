@@ -1,0 +1,6 @@
+replicas: 1
+image:
+  repository: dupertramp/jenkins_exam_movie
+  tag: latest
+service:
+  port: 8001

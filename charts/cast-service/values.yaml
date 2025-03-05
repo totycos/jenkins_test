@@ -1,0 +1,6 @@
+replicas: 1
+image:
+  repository: dupertramp/jenkins_exam_cast
+  tag: latest
+service:
+  port: 8002
