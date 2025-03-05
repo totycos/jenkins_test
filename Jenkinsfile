@@ -28,7 +28,7 @@ pipeline {
                             sh '''
                             cd cast-service
                             docker build -t $DOCKER_ID/$DOCKER_IMAGE_CAST:$DOCKER_TAG .
-                            docker build -t $DOCKER_ID/$DOCKER_IMAGE_CAST:$latest .
+                            docker build -t $DOCKER_ID/$DOCKER_IMAGE_CAST:latest .
                             sleep 4
                             '''
                         }
