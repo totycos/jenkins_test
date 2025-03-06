@@ -156,8 +156,8 @@ pipeline {
                     mkdir .kube
                     ls
                     cat $KUBECONFIG > .kube/config
-                    helm upgrade --install fastapi_dev . --namespace dev
-                    helm upgrade --install fastapi_dev charts/ \
+                    helm upgrade --install fastapi-dev . --namespace dev
+                    helm upgrade --install fastapi-dev charts/ \
                         --values=values.yml \
                         --namespace dev \
                         --set images.gateway.repository="$DOCKERHUB_IMAGE_GATEWAY" \
