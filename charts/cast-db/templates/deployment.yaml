@@ -1,23 +1,23 @@
 apiVersion: apps/v1
-    kind: Deployment
+kind: Deployment
+metadata:
+  name: cast-db
+spec:
+  selector:
+    matchLabels:
+      app: cast-db
+  template:
     metadata:
-      name: cast-db
+      labels:
+        app: cast-db
     spec:
-      selector:
-        matchLabels:
-          app: cast-db
-      template:
-        metadata:
-          labels:
-            app: cast-db
-        spec:
-          containers:
-            - name: cast-db
-              image: postgres:12.1-alpine
-              env:
-                - name: POSTGRES_USER
-                  value: "cast_db_username"
-                - name: POSTGRES_PASSWORD
-                  value: "cast_db_password"
-                - name: POSTGRES_DB
-                  value: "cast_db_dev"
+      containers:
+        - name: cast-db
+          image: postgres:12.1-alpine
+          env:
+            - name: POSTGRES_USER
+              value: "cast_db_username"
+            - name: POSTGRES_PASSWORD
+              value: "cast_db_password"
+            - name: POSTGRES_DB
+              value: "cast_db_dev"

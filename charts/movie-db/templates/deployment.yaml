@@ -1,23 +1,23 @@
-    apiVersion: apps/v1
-    kind: Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: movie-db
+spec:
+  selector:
+    matchLabels:
+      app: movie-db
+  template:
     metadata:
-      name: movie-db
+      labels:
+        app: movie-db
     spec:
-      selector:
-        matchLabels:
-          app: movie-db
-      template:
-        metadata:
-          labels:
-            app: movie-db
-        spec:
-          containers:
-            - name: movie-db
-              image: postgres:12.1-alpine
-              env:
-                - name: POSTGRES_USER
-                  value: "movie_db_username"
-                - name: POSTGRES_PASSWORD
-                  value: "movie_db_password"
-                - name: POSTGRES_DB
-                  value: "movie_db_dev"
+      containers:
+        - name: movie-db
+          image: postgres:12.1-alpine
+          env:
+            - name: POSTGRES_USER
+              value: "movie_db_username"
+            - name: POSTGRES_PASSWORD
+              value: "movie_db_password"
+            - name: POSTGRES_DB
+              value: "movie_db_dev"
