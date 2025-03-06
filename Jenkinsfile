@@ -156,10 +156,7 @@ pipeline {
                     mkdir .kube
                     ls
                     cat $KUBECONFIG > .kube/config
-                    cp charts/values.yaml values.yml
-                    cat values.yml
-                    sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yml
-                    helm upgrade --install app fastapi_dev --values=values.yml --namespace dev
+                    helm upgrade --install fastapi_dev . --namespace dev
                     helm upgrade --install fastapi_dev charts/ \
                         --values=values.yml \
                         --namespace dev \
