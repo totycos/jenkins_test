@@ -28,6 +28,12 @@ spec:
           env:
             - name: DATABASE_URI
               value: "postgresql://cast_db_username:cast_db_password@cast-db/cast_db_dev"
+            - name: POSTGRES_USER
+              value: "cast_db_username"
+            - name: POSTGRES_PASSWORD
+              value: "cast_db_password"
+            - name: POSTGRES_DB
+              value: "cast_db_dev"
           volumeMounts:
             - name: cast-service-volume
               mountPath: /app
