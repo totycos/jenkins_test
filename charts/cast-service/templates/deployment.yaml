@@ -15,6 +15,14 @@ spec:
       containers:
         - name: cast-service
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          command:
+            - uvicorn
+            - app.main:app
+            - --reload
+            - --host
+            - 0.0.0.0
+            - --port
+            - "8000"
           ports:
             - containerPort: 8000
           env:
