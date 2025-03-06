@@ -30,6 +30,12 @@ spec:
               value: "postgresql://movie_db_username:movie_db_password@movie-db/movie_db_dev"
             - name: CAST_SERVICE_HOST_URL
               value: "http://cast-service:8000/api/v1/casts/"
+            - name: POSTGRES_USER
+              value: "movie_db_username"
+            - name: POSTGRES_PASSWORD
+              value: "movie_db_password"
+            - name: POSTGRES_DB
+              value: "movie_db_dev"
           volumeMounts:
             - name: movie-service-volume
               mountPath: /app
