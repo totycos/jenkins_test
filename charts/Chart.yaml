@@ -4,16 +4,16 @@ version: 0.1.0
 dependencies:
   - name: movie-service
     version: 0.1.0
-    repository: "file://./movie-service"
+    repository: "file://movie-service"
   - name: cast-service
     version: 0.1.0
-    repository: "file://./cast-service"
+    repository: "file://cast-service"
   - name: movie-db
     version: 0.1.0
-    repository: "file://./movie-db"
+    repository: "file://movie-db"
   - name: cast-db
     version: 0.1.0
-    repository: "file://./cast-db"
+    repository: "file://cast-db"
   - name: nginx
     version: 0.1.0
-    repository: "file://./nginx"
+    repository: "file://nginx"

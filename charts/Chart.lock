@@ -1,0 +1,18 @@
+dependencies:
+- name: movie-service
+  repository: file://movie-service
+  version: 0.1.0
+- name: cast-service
+  repository: file://cast-service
+  version: 0.1.0
+- name: movie-db
+  repository: file://movie-db
+  version: 0.1.0
+- name: cast-db
+  repository: file://cast-db
+  version: 0.1.0
+- name: nginx
+  repository: file://nginx
+  version: 0.1.0
+digest: sha256:6c30c761fc7c5ab4bb64ccc398bfcf6446df73b21b5a65dee489801853d71cc0
+generated: "2025-03-06T13:06:30.936061624Z"
