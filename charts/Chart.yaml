@@ -1,20 +1,19 @@
-Chart.yaml:
-  apiVersion: v2
-  name: jenkins-devops
-  version: 0.1.0
-  dependencies:
-    - name: movie-service
-      version: 0.1.0
-      repository: "file://./movie-service"
-    - name: cast-service
-      version: 0.1.0
-      repository: "file://./cast-service"
-    - name: movie-db
-      version: 0.1.0
-      repository: "file://./movie-db"
-    - name: cast-db
-      version: 0.1.0
-      repository: "file://./cast-db"
-    - name: nginx
-      version: 0.1.0
-      repository: "file://./nginx"
+apiVersion: v2
+name: jenkins-devops
+version: 0.1.0
+dependencies:
+  - name: movie-service
+    version: 0.1.0
+    repository: "file://./movie-service"
+  - name: cast-service
+    version: 0.1.0
+    repository: "file://./cast-service"
+  - name: movie-db
+    version: 0.1.0
+    repository: "file://./movie-db"
+  - name: cast-db
+    version: 0.1.0
+    repository: "file://./cast-db"
+  - name: nginx
+    version: 0.1.0
+    repository: "file://./nginx"
