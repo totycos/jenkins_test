@@ -156,7 +156,7 @@ pipeline {
                     mkdir .kube
                     ls
                     cat $KUBECONFIG > .kube/config
-                    helm upgrade --install fastapi-dev ./charts/ --namespace dev
+                    helm upgrade --install jenkins-devops ./charts/ --namespace dev
                     helm upgrade --install fastapi-dev charts/ \
                         --values=values.yml \
                         --namespace dev \
