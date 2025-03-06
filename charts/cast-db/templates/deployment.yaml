@@ -21,3 +21,10 @@ spec:
               value: "cast_db_password"
             - name: POSTGRES_DB
               value: "cast_db_dev"
+          volumeMounts:
+              - name: cast-db-volume
+                mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: cast-db-volume
+        persistentVolumeClaim:
+          claimName: cast-db-pvc

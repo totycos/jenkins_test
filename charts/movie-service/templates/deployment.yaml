@@ -22,3 +22,11 @@ spec:
               value: "postgresql://movie_db_username:movie_db_password@movie-db/movie_db_dev"
             - name: CAST_SERVICE_HOST_URL
               value: "http://cast-service:8000/api/v1/casts/"
+          volumeMounts:
+            - name: movie-service-volume
+              mountPath: /app
+      volumes:
+        - name: movie-service-volume
+          hostPath:
+            path: /home/ubuntu/jenkins_devops_exams/movie-service
+            type: Directory

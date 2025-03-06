@@ -20,3 +20,11 @@ spec:
           env:
             - name: DATABASE_URI
               value: "postgresql://cast_db_username:cast_db_password@cast-db/cast_db_dev"
+          volumeMounts:
+            - name: cast-service-volume
+              mountPath: /app
+      volumes:
+        - name: cast-service-volume
+          hostPath:
+            path: /home/ubuntu/jenkins_devops_exams/cast-service
+            type: Directory

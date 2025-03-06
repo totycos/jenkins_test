@@ -21,3 +21,10 @@ spec:
               value: "movie_db_password"
             - name: POSTGRES_DB
               value: "movie_db_dev"
+          volumeMounts:
+              - name: movie-db-volume
+                mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: movie-db-volume
+          persistentVolumeClaim:
+            claimName: movie-db-pvc
