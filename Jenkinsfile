@@ -190,6 +190,7 @@ pipeline {
             steps {
                 script {
                     sh '''
+                    printenv | grep GIT
                     rm -Rf .kube
                     mkdir .kube
                     ls
@@ -204,7 +205,7 @@ pipeline {
 
         stage('Déploiement en prod') {
             when {
-                branch 'main'
+                branch 'origin/main'
             }
             environment {
                 KUBECONFIG = credentials("config")
