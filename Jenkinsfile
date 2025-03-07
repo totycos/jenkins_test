@@ -164,47 +164,64 @@ pipeline {
             }
         }
 
-        // stage('Déploiement en staging') {
-        //     environment {
-        //         KUBECONFIG = credentials("config")
-        //     }
-        //     steps {
-        //         script {
-        //             sh '''
-        //             rm -Rf .kube
-        //             mkdir .kube
-        //             ls
-        //             cat $KUBECONFIG > .kube/config
-        //             cp fastapi/values.yaml values.yml
-        //             cat values.yml
-        //             sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yml
-        //             helm upgrade --install app fastapi --values=values.yml --namespace staging
-        //             '''
-        //         }
-        //     }
-        // }
+        stage('Déploiement en QA') {
+            environment {
+                KUBECONFIG = credentials("config")
+            }
+            steps {
+                script {
+                    sh '''
+                    rm -Rf .kube
+                    mkdir .kube
+                    ls
+                    cat $KUBECONFIG > .kube/config
+                    helm dependency update charts/
+                    helm upgrade --install jenkins-devops ./charts/ --namespace qa
+                    kubectl get all -n qa
+                    '''
+                }
+            }
+        }
 
-        // stage('Déploiement en prod') {
-        //     environment {
-        //         KUBECONFIG = credentials("config")
-        //     }
-        //     steps {
-        //         timeout(time: 15, unit: "MINUTES") {
-        //             input message: 'Do you want to deploy in production ?', ok: 'Yes'
-        //         }
-        //         script {
-        //             sh '''
-        //             rm -Rf .kube
-        //             mkdir .kube
-        //             ls
-        //             cat $KUBECONFIG > .kube/config
-        //             cp fastapi/values.yaml values.yml
-        //             cat values.yml
-        //             sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yml
-        //             helm upgrade --install app fastapi --values=values.yml --namespace prod
-        //             '''
-        //         }
-        //     }
-        // }
+        stage('Déploiement en staging') {
+            environment {
+                KUBECONFIG = credentials("config")
+            }
+            steps {
+                script {
+                    sh '''
+                    rm -Rf .kube
+                    mkdir .kube
+                    ls
+                    cat $KUBECONFIG > .kube/config
+                    helm dependency update charts/
+                    helm upgrade --install jenkins-devops ./charts/ --namespace staging
+                    kubectl get all -n staging
+                    '''
+                }
+            }
+        }
+
+        stage('Déploiement en prod') {
+            environment {
+                KUBECONFIG = credentials("config")
+            }
+            steps {
+                timeout(time: 15, unit: "MINUTES") {
+                    input message: 'Do you want to deploy in production ?', ok: 'Yes'
+                }
+                script {
+                    sh '''
+                    rm -Rf .kube
+                    mkdir .kube
+                    ls
+                    cat $KUBECONFIG > .kube/config
+                    helm dependency update charts/
+                    helm upgrade --install jenkins-devops ./charts/ --namespace prod
+                    kubectl get all -n prod
+                    '''
+                }
+            }
+        }
     }
 }
